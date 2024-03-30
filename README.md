@@ -1,0 +1,1 @@
+# Exercice 2 : Solution modèle
