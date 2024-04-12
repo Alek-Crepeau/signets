@@ -1,7 +1,7 @@
 import Dossier from './Dossier';
 
 // Importer le composant motion
-import {motion} from 'framer-motion';
+import { motion } from 'framer-motion';
 
 import './ListeDossiers.scss';
 
