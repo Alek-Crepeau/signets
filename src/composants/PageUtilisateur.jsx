@@ -1,27 +1,19 @@
-import './PageUtilisateur.scss';
+import "./PageUtilisateur.scss";
 
-import Entete from './Entete';
-import ListeDossiers from './ListeDossiers';
-import FrmDossier from './FrmDossier';
+import Entete from "./Entete";
+import ListeDossiers from "./ListeDossiers";
+import FrmDossier from "./FrmDossier";
 
-import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
-import { useEffect, useState } from 'react';
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
+import { useEffect, useState } from "react";
+import { creer } from "../code/dossier-modele";
 
-export default function PageUtilisateur({util}) {
+export default function PageUtilisateur({ util }) {
   // État pour gérer les dossiers
-  const [dossiers, setDossiers] = useState(
-    () => JSON.parse(window.localStorage.getItem('signets')) || []
-  );
+  const [dossiers, setDossiers] = useState([]);
 
-  // Sauvegarder cet état dans localStorage
-  useEffect(
-    () => window.localStorage.setItem('signets', JSON.stringify(dossiers))
-    ,
-    [dossiers]
-  );
-
-  // État d'affichage du formulaire d'ajout de dossier 
+  // État d'affichage du formulaire d'ajout de dossier
   const [frmDossierOuvert, setFrmDossierOuvert] = useState(false);
 
   /**
@@ -29,30 +21,34 @@ export default function PageUtilisateur({util}) {
    */
   function ajouterDossier(titre, couverture, couleur, dateModif) {
     let nouveauDossier = {
-      id: window.crypto.randomUUID(),
       titre: titre,
       couverture: couverture,
       couleur: couleur,
-      dateModif: dateModif
+      dateModif: dateModif,
     };
+    const idDossier = creer(util.uid, nouveauDossier);
     setDossiers([...dossiers, nouveauDossier]);
   }
 
   return (
     <div className="PageUtilisateur">
-        <Entete util={util} />
-        <section className="contenu-principal">
-          <ListeDossiers 
-            dossiers={dossiers} 
-            setDossiers={setDossiers} 
-          />
-          <FrmDossier 
-            ouvert={frmDossierOuvert} 
-            setOuvert={setFrmDossierOuvert}
-            actionDossier={ajouterDossier}
-          />
-          <Fab onClick={() => setFrmDossierOuvert(true)} color='primary' className='btn-ajout-dossier' size='large'><AddIcon /></Fab>
-        </section>
+      <Entete util={util} />
+      <section className="contenu-principal">
+        <ListeDossiers dossiers={dossiers} setDossiers={setDossiers} />
+        <FrmDossier
+          ouvert={frmDossierOuvert}
+          setOuvert={setFrmDossierOuvert}
+          actionDossier={ajouterDossier}
+        />
+        <Fab
+          onClick={() => setFrmDossierOuvert(true)}
+          color="primary"
+          className="btn-ajout-dossier"
+          size="large"
+        >
+          <AddIcon />
+        </Fab>
+      </section>
     </div>
   );
 }

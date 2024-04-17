@@ -1,6 +1,6 @@
-import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
-import { firebaseAuth, googleProvider, bd } from "./init";
-import { setDoc } from "firebase/firestore";
+import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
+import { firebaseAuth, googleProvider, bd, collUtilisateur } from "./init";
+import { setDoc, doc } from "firebase/firestore";
 
 /**
  * Permet à un utilisateur de se connecter en utilisant l'authentification
@@ -16,10 +16,25 @@ export function deconnexion() {
   signOut(firebaseAuth);
 }
 
+/**
+ * Enregistre l'observateur de connexion Firebase Auth.
+ * @param {function} mutateurUtil fonction de mutation de l'état 'utilisateur'.
+ * @return void.
+ */
 export function observerEtatConnexion(mutateurUtil) {
   onAuthStateChanged(firebaseAuth, (u) => {
     if (u) {
-      setDoc();
+      // Enregistrer les données de cet utilisateur dans Firestore
+      setDoc(
+        doc(bd, collUtilisateur, u.uid),
+        {
+          nomComplet: u.displayName,
+          avatar: u.photoURL,
+          dcc: new Date().getTime(),
+          courriel: u.email,
+        },
+        { merge: true }
+      );
     }
     mutateurUtil(u);
   });

@@ -12,4 +12,9 @@ export const firebaseAuth = getAuth(appli);
 // Initialiser l'authentification fédérée avec Google (GoogleAuthProvider)
 export const googleProvider = new GoogleAuthProvider();
 
+// Initialiser Firestore
 export const bd = getFirestore(appli);
+
+export const collUtilisateur = "signets-utilisateurs";
+
+export const collDossier = "dossiers";
