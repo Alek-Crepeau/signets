@@ -1,7 +1,7 @@
-import objetConfig from "./config";
-import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import objetConfig from './config';
+import { initializeApp } from 'firebase/app';
+import { getAuth, GoogleAuthProvider } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 
 // Initialiser les services de Firebase (crééer une référence à une appli)
 export const appli = initializeApp(objetConfig);
@@ -10,11 +10,11 @@ export const appli = initializeApp(objetConfig);
 export const firebaseAuth = getAuth(appli);
 
 // Initialiser l'authentification fédérée avec Google (GoogleAuthProvider)
-export const googleProvider = new GoogleAuthProvider();
+export const googleProvider = new GoogleAuthProvider(); 
 
 // Initialiser Firestore
 export const bd = getFirestore(appli);
 
-export const collUtilisateur = "signets-utilisateurs";
-
-export const collDossier = "dossiers";
+// Raccourcis pour les collections utilisées
+export const collUtilisateurs = "signets-utilisateurs";
+export const collDossiers = "dossiers"

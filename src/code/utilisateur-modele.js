@@ -1,15 +1,15 @@
 import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
-import { firebaseAuth, googleProvider, bd, collUtilisateur } from "./init";
-import { setDoc, doc } from "firebase/firestore";
+import { firebaseAuth, googleProvider, bd, collUtilisateurs } from "./init";
+import { doc, setDoc } from "firebase/firestore";
 
 /**
  * Permet à un utilisateur de se connecter en utilisant l'authentification
  * fédérée Google.
  */
 export function connexion() {
-  signInWithPopup(firebaseAuth, googleProvider).then((u) =>
-    console.log("Utilisateur", u)
-  );
+  signInWithPopup(firebaseAuth, googleProvider).then(
+    (u) => console.log("Utilisateur", u)
+  )
 }
 
 export function deconnexion() {
@@ -22,20 +22,21 @@ export function deconnexion() {
  * @return void.
  */
 export function observerEtatConnexion(mutateurUtil) {
-  onAuthStateChanged(firebaseAuth, (u) => {
-    if (u) {
-      // Enregistrer les données de cet utilisateur dans Firestore
-      setDoc(
-        doc(bd, collUtilisateur, u.uid),
-        {
-          nomComplet: u.displayName,
-          avatar: u.photoURL,
-          dcc: new Date().getTime(),
-          courriel: u.email,
-        },
-        { merge: true }
-      );
-    }
-    mutateurUtil(u);
-  });
+  onAuthStateChanged(firebaseAuth, u => {
+                      if(u) {
+                        // Enregistrer les données de cet utilisateur dans Firestore
+                        setDoc(
+                          doc(bd, collUtilisateurs, u.uid),
+                          {
+                            nomComplet: u.displayName,
+                            avatar: u.photoURL,
+                            dcc: (new Date()).getTime(),
+                            courriel: u.email
+                          },
+                          {merge: true}
+                        )
+                      }
+                      mutateurUtil(u)
+                    }
+  );
 }
